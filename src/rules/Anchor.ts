@@ -49,7 +49,7 @@ export class Anchor extends BaseRules {
     }
 
     showIssues(): any[] {
-        return [this.getWithoutText(), this.getWithoutHrefAttribute()].filter(res => res.length > 0);
+        return [this.getWithoutText(), this.getWithoutHrefAttribute()].filter(res => res.issues.length > 0);
     }
 
     hasIssues(): boolean {
