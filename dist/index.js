@@ -174,7 +174,7 @@ var Anchor = class extends BaseRules {
     return this.makeIssueObject(this.keys.textMissing.code, this.keys.textMissing.criteria, links);
   }
   showIssues() {
-    return [this.getWithoutText(), this.getWithoutHrefAttribute()].filter((res) => res.length > 0);
+    return [this.getWithoutText(), this.getWithoutHrefAttribute()].filter((res) => res.issues.length > 0);
   }
   hasIssues() {
     const hasTags = this.getTags().length > 0;
@@ -201,10 +201,12 @@ var Scanner = class _Scanner {
     let issues = [];
     this.rules.forEach((ruleClass) => {
       const rule = new ruleClass(this.document);
+      console.log(rule, rule.hasIssues());
       if (rule.hasIssues()) {
         issues.push(rule.showIssues());
       }
     });
+    console.log(issues);
     return issues.flat();
   }
 };
