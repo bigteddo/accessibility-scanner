@@ -20,6 +20,16 @@ describe('Anchor',()=>{
 
         expect(actual).toBeFalsy()
     });
+
+    it('should detect Anchor tags have issues', () => {
+        const parser = new DOMParser();
+        const document = parser.parseFromString('<div><h1>this is a header</h1><p>this is a paragraph</p>\n' +
+            '<a>link</a><div>Tenetur enim labore mollitia minus id error modi.&nbsp;</div></div>',"text/html")
+        const anchors = new Anchor(document)
+        const actual =  anchors.hasIssues()
+
+        expect(actual).toBeTruthy()
+    });
     it('should detect Links have text ', () => {
         const parser = new DOMParser();
         const document = parser.parseFromString('<div><h1>this is a header</h1><p>this is a paragraph</p>\n' +
