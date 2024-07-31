@@ -19,9 +19,9 @@ declare class BaseRules implements RuleInterface {
     type: string;
     constructor(doc: Document);
     protected makeIssueObject(key: string, criteria: string, elements: any[]): {
-        type: string;
+        section: string;
         key: string;
-        criteria: string;
+        success_criterion: string;
         issues: any[];
     };
     getTags(): HTMLElement[];

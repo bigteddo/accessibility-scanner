@@ -55,7 +55,7 @@ var BaseRules = class {
     this.document = doc;
   }
   makeIssueObject(key, criteria, elements) {
-    return { type: this.type, key, criteria, issues: elements };
+    return { section: this.type, key, success_criterion: criteria, issues: elements };
   }
   getTags() {
     return [];
@@ -75,7 +75,7 @@ var Headings = class _Headings extends BaseRules {
     this.type = "headings";
     this.issues = {
       incorrectOrder: {
-        code: "order_incorrect",
+        code: "heading_order_incorrect",
         criteria: "2.4.10"
       }
     };
@@ -201,7 +201,6 @@ var Scanner = class _Scanner {
     let issues = [];
     this.rules.forEach((ruleClass) => {
       const rule = new ruleClass(this.document);
-      console.log(rule, rule.hasIssues());
       if (rule.hasIssues()) {
         issues.push(rule.showIssues());
       }
