@@ -9,7 +9,7 @@ export class BaseRules implements RuleInterface {
     }
 
     protected makeIssueObject(key: string, criteria: string, elements: any[]) {
-        return {type: this.type, key: key, criteria: criteria, issues: elements}
+        return {section: this.type, key: key, success_criterion: criteria, issues: elements}
     }
 
     getTags(): HTMLElement[] {

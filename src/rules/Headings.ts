@@ -5,7 +5,7 @@ export class Headings extends BaseRules {
     public type = 'headings'
     public issues = {
         incorrectOrder: {
-            code: 'order_incorrect',
+            code: 'heading_order_incorrect',
             criteria: '2.4.10'
         } ,
     }

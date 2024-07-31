@@ -19,7 +19,6 @@ export class Scanner {
         let issues: any[]=[];
         this.rules.forEach((ruleClass)=>{
             const rule = new ruleClass(this.document)
-            console.log(rule, rule.hasIssues())
             if(rule.hasIssues()){
                 issues.push(rule.showIssues())
             }
