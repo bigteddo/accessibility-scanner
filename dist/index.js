@@ -30,7 +30,9 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/index.ts
 var src_exports = {};
 __export(src_exports, {
-  default: () => src_default
+  Anchor: () => Anchor,
+  Headings: () => Headings,
+  Scanner: () => Scanner
 });
 module.exports = __toCommonJS(src_exports);
 
@@ -52,8 +54,8 @@ var BaseRules = class {
     this.type = "";
     this.document = doc;
   }
-  makeIssueObject(messages, elements) {
-    return { messages, issues: elements };
+  makeIssueObject(key, criteria, elements) {
+    return { section: this.type, key, success_criterion: criteria, issues: elements };
   }
   getTags() {
     return [];
@@ -71,8 +73,11 @@ var Headings = class _Headings extends BaseRules {
   constructor() {
     super(...arguments);
     this.type = "headings";
-    this.messages = {
-      incorrectOrder: "Heading tag is not in correct order"
+    this.issues = {
+      incorrectOrder: {
+        code: "heading_order_incorrect",
+        criteria: "2.4.10"
+      }
     };
   }
   getTags() {
@@ -101,7 +106,7 @@ var Headings = class _Headings extends BaseRules {
         }
       }
     }
-    return this.makeIssueObject(this.messages.incorrectOrder, outOfOrderElements);
+    return this.makeIssueObject(this.issues.incorrectOrder.code, this.issues.incorrectOrder.criteria, outOfOrderElements);
   }
   static areInOrder(doc) {
     let headersIndex = 0;
@@ -109,6 +114,9 @@ var Headings = class _Headings extends BaseRules {
     const elements = doc.getElementsByTagName("*");
     for (let i = 0; i < elements.length; i++) {
       if (headers.includes(elements[i].tagName.toLowerCase())) {
+        if (headersIndex == 0) {
+          headersIndex = headers.indexOf(elements[i].tagName.toLowerCase());
+        }
         if (elements[i].tagName.toLowerCase() === headers[headersIndex] || elements[i].tagName.toLowerCase() === headers[headersIndex + 1]) {
           if (elements[i].tagName.toLowerCase() === headers[headersIndex + 1]) {
             headersIndex++;
@@ -134,9 +142,15 @@ var Anchor = class extends BaseRules {
   constructor(doc) {
     super(doc);
     this.type = "anchors";
-    this.messages = {
-      textMissing: "Link text is missing.",
-      hrefMissing: "Link Href is missing. "
+    this.keys = {
+      textMissing: {
+        code: "link_text_missing",
+        criteria: "2.4.4"
+      },
+      hrefMissing: {
+        code: "link_href_missing",
+        criteria: "2.4.4"
+      }
     };
     this.links = this.getTags();
   }
@@ -149,7 +163,7 @@ var Anchor = class extends BaseRules {
   }
   getWithoutHrefAttribute() {
     const links = this.links.filter((link) => !link.hasAttribute("href"));
-    return this.makeIssueObject(this.messages.hrefMissing, links);
+    return this.makeIssueObject(this.keys.hrefMissing.code, this.keys.hrefMissing.criteria, links);
   }
   haveText() {
     const withoutText = this.getWithoutText();
@@ -157,15 +171,16 @@ var Anchor = class extends BaseRules {
   }
   getWithoutText() {
     const links = this.links.filter((anchor) => import_lodash.default.isEmpty(anchor.textContent));
-    return this.makeIssueObject(this.messages.textMissing, links);
+    return this.makeIssueObject(this.keys.textMissing.code, this.keys.textMissing.criteria, links);
   }
   showIssues() {
-    return [...this.getWithoutText(), this.getWithoutHrefAttribute()];
+    return [this.getWithoutText(), this.getWithoutHrefAttribute()].filter((res) => res.issues.length > 0);
   }
   hasIssues() {
+    const hasTags = this.getTags().length > 0;
     const haveHrefAttr = this.haveHrefAttribute();
     const haveText = this.haveText();
-    return haveHrefAttr || haveText;
+    return hasTags && (!haveHrefAttr || !haveText);
   }
 };
 
@@ -187,16 +202,16 @@ var Scanner = class _Scanner {
     this.rules.forEach((ruleClass) => {
       const rule = new ruleClass(this.document);
       if (rule.hasIssues()) {
-        issues.push({ type: rule.type, problems: rule.showIssues() });
+        issues.push(rule.showIssues());
       }
     });
-    return issues;
+    console.log(issues);
+    return issues.flat();
   }
 };
-
-// src/index.ts
-var src_default = {
-  Scanner,
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
   Anchor,
-  Headings
-};
+  Headings,
+  Scanner
+});

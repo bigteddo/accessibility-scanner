@@ -1,13 +1,17 @@
 import RuleInterface from './contracts/RuleInterface'
-export class BaseRules implements RuleInterface{
+
+export class BaseRules implements RuleInterface {
     document: Document;
     type: string = '';
+
     constructor(doc: Document) {
         this.document = doc
     }
-    protected makeIssueObject(messages: string, elements: any[]){
-        return {messages: messages, issues: elements}
+
+    protected makeIssueObject(key: string, criteria: string, elements: any[]) {
+        return {section: this.type, key: key, success_criterion: criteria, issues: elements}
     }
+
     getTags(): HTMLElement[] {
         return [];
     }

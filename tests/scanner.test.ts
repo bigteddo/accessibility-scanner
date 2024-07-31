@@ -27,14 +27,12 @@ describe('scanner', () => {
             '</ul>\n' +
             '\n' +
             '<a href="https://scanner.mindedgeuniversity.com" target="_blank" rel="noopener"></a>.\n' +
+            '<a target="_blank" rel="noopener"></a>.\n' +
             '<a target="_blank" rel="noopener">abc</a>.\n' +
             '<h1>this is a h1</h1>'
 
         const scanner = Scanner.fromHtmlText(html)
         const actual = scanner.runScan()
-        actual.forEach((item)=>{
-            console.log(item.type,item.problems)
-        })
         expect(actual.length > 0).toBeTruthy()
     })
 
@@ -51,8 +49,8 @@ describe('scanner', () => {
             '<li>Choose a time frame (all time, 7 days, or 30 days). Click "Scan."</li>\n' +
             '</ul>\n' +
             '\n' +
-            '<a href="https://scanner.mindedgeuniversity.com" target="_blank" rel="noopener"></a>.\n' +
-            '<a target="_blank" rel="noopener">abc</a>.\n' +
+            '<a href="https://scanner.mindedgeuniversity.com" target="_blank" rel="noopener">acb</a>.\n' +
+            '<a href="#abc"  target="_blank" rel="noopener">abc</a>.\n' +
             '<h3>this is a h3</h3>'
 
         const scanner = Scanner.fromHtmlText(html)

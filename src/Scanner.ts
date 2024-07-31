@@ -20,11 +20,11 @@ export class Scanner {
         this.rules.forEach((ruleClass)=>{
             const rule = new ruleClass(this.document)
             if(rule.hasIssues()){
-                issues.push({type: rule.type, problems: rule.showIssues()})
+                issues.push(rule.showIssues())
             }
         })
-
-        return issues
+        console.log(issues)
+        return issues.flat()
     }
 
 

@@ -3,8 +3,11 @@ import {BaseRules} from "./BaseRules";
 export class Headings extends BaseRules {
 
     public type = 'headings'
-    public messages = {
-        incorrectOrder: 'Heading tag is not in correct order',
+    public issues = {
+        incorrectOrder: {
+            code: 'heading_order_incorrect',
+            criteria: '2.4.10'
+        } ,
     }
 
     public getTags(): HTMLElement[] {
@@ -37,7 +40,7 @@ export class Headings extends BaseRules {
                 }
             }
         }
-        return this.makeIssueObject(this.messages.incorrectOrder,outOfOrderElements);
+        return this.makeIssueObject(this.issues.incorrectOrder.code,this.issues.incorrectOrder.criteria,outOfOrderElements);
     }
 
     public static areInOrder(doc: Document) {
@@ -47,6 +50,9 @@ export class Headings extends BaseRules {
         const elements = doc.getElementsByTagName('*');
         for (let i = 0; i < elements.length; i++) {
             if (headers.includes(elements[i].tagName.toLowerCase())) {
+                if(headersIndex == 0){
+                    headersIndex = headers.indexOf(elements[i].tagName.toLowerCase());
+                }
                 if (elements[i].tagName.toLowerCase() === headers[headersIndex] ||
                     elements[i].tagName.toLowerCase() === headers[headersIndex + 1]) {
                     if (elements[i].tagName.toLowerCase() === headers[headersIndex + 1]) {

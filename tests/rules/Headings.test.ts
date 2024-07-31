@@ -4,7 +4,7 @@ describe('Headings',()=>{
     it('should detect all header tags ', () => {
         const parser = new DOMParser();
         const document = parser.parseFromString('<div><h1>this is a header</h1><p>this is a paragraph</p>\n' +
-            '<h2>this is an h2</h2><div>Tenetur enim labore mollitia minus id error modi.&nbsp;</div></div>',"text/html")
+            '<h2>this is an h2</h2><div>T modi.&nbsp;</div></div>',"text/html")
         const headings = new Headings(document)
         const actual = headings.getTags().length
 
@@ -13,8 +13,9 @@ describe('Headings',()=>{
     });
     it('should detect header tags are in order ', () => {
         const parser = new DOMParser();
-        const document = parser.parseFromString('<div><h1>this is a header</h1><p>this is a paragraph</p>\n' +
-            '<h2>this is an h2</h2><div>Tenetur enim labore mollitia minus id error modi.&nbsp;</div></div>',"text/html")
+        const document = parser.parseFromString('<h4>Domains</h4>\n' +
+            '<penetur enim labore mollitia minus id error </p>\n' +
+            '</ul>',"text/html")
 
         const actual = Headings.areInOrder(document)
 
@@ -83,12 +84,6 @@ describe('Headings',()=>{
 
         const headers = new Headings(document)
         const actual = headers.showIssues()[0]
-
-        console.log(actual.issues)
-        actual.issues.forEach((issue: any)=>{
-            console.log(issue.outerHTML)
-        })
-
         expect(actual.issues.length).toEqual(2)
     });
 

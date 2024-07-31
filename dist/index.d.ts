@@ -18,8 +18,10 @@ declare class BaseRules implements RuleInterface {
     document: Document;
     type: string;
     constructor(doc: Document);
-    protected makeIssueObject(messages: string, elements: any[]): {
-        messages: string;
+    protected makeIssueObject(key: string, criteria: string, elements: any[]): {
+        section: string;
+        key: string;
+        success_criterion: string;
         issues: any[];
     };
     getTags(): HTMLElement[];
@@ -30,9 +32,15 @@ declare class BaseRules implements RuleInterface {
 declare class Anchor extends BaseRules {
     type: string;
     private links;
-    messages: {
-        textMissing: string;
-        hrefMissing: string;
+    keys: {
+        textMissing: {
+            code: string;
+            criteria: string;
+        };
+        hrefMissing: {
+            code: string;
+            criteria: string;
+        };
     };
     constructor(doc: Document);
     getTags(): HTMLElement[];
@@ -46,8 +54,11 @@ declare class Anchor extends BaseRules {
 
 declare class Headings extends BaseRules {
     type: string;
-    messages: {
-        incorrectOrder: string;
+    issues: {
+        incorrectOrder: {
+            code: string;
+            criteria: string;
+        };
     };
     getTags(): HTMLElement[];
     findOutOfOrderHeaders(): any;
@@ -56,10 +67,4 @@ declare class Headings extends BaseRules {
     showIssues(): any[];
 }
 
-declare const _default: {
-    Scanner: typeof Scanner;
-    Anchor: typeof Anchor;
-    Headings: typeof Headings;
-};
-
-export { _default as default };
+export { Anchor, Headings, Scanner };
