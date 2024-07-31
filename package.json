@@ -1,5 +1,5 @@
 {
-  "name": "accessibility-scanner",
+  "name": "@bigteddo/accessibility-scanner",
   "version": "0.0.1",
   "description": "scan html for accessibility issues ",
   "main": "dist/index.js",
