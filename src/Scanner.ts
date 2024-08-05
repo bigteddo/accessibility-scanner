@@ -1,9 +1,10 @@
 import {DOM, DOM as String} from './utils/DOM'
 import {Headings} from "./rules/Headings";
 import {Anchor} from "./rules/Anchor";
+import {Image} from "./rules/Image";
 export class Scanner {
     private document: Document|null = null;
-    private rules: any[]= [Headings,Anchor]
+    private rules: any[]= [Headings,Anchor,Image]
     constructor(doc: Document) {
           this.document = doc;
     }
