@@ -24,7 +24,6 @@ export class Scanner {
                 issues.push(rule.showIssues())
             }
         })
-        console.log(issues)
         return issues.flat()
     }
 
