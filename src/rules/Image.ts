@@ -41,11 +41,11 @@ export  class Image extends BaseRules{
         const images = this.getAltTextSameAsFilename()
         return images.issues.length > 0
     }
-    showIssues(): any[] {
+    public showIssues(): any[] {
         return [this.getWithoutAltAttribute(), this.getAltTextSameAsFilename(), this.getWithEmptyAltAttribute()].filter(res => res.issues.length > 0);
     }
 
-    hasIssues(): boolean {
+    public hasIssues(): boolean {
         const hasTags = this.getTags().length > 0
         const missingAltAttr = this.hasImagesMissingAltAttribute()
         const hasSameSrcAndAlt = this.hasImagesWithAtlTextSameAsFilename()
