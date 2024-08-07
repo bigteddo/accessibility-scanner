@@ -3,7 +3,7 @@ import _ from "lodash"
 
 export  class Image extends BaseRules{
     public type = 'Image'
-    images: any
+    public images: any
     constructor(doc: Document) {
         super(doc);
         this.images = this.getTags()
