@@ -184,11 +184,57 @@ var Anchor = class extends BaseRules {
   }
 };
 
+// src/rules/Image.ts
+var import_lodash2 = __toESM(require("lodash"));
+var Image = class extends BaseRules {
+  constructor(doc) {
+    super(doc);
+    this.type = "Image";
+    this.images = this.getTags();
+  }
+  getTags() {
+    return [...this.document.getElementsByTagName("img")];
+  }
+  getWithoutAltAttribute() {
+    const images = this.images.filter((img) => !img.hasAttribute("alt"));
+    return this.makeIssueObject("missing_alt_attribute", "1.1.1", images);
+  }
+  hasImagesMissingAltAttribute() {
+    const withoutAltAttribute = this.getWithoutAltAttribute();
+    return withoutAltAttribute.issues.length > 0;
+  }
+  getWithEmptyAltAttribute() {
+    const images = this.images.filter((img) => img.hasAttribute("alt") && import_lodash2.default.isEmpty(img.getAttribute("atl")));
+    return this.makeIssueObject("missing_alt_attribute", "1.1.1", images);
+  }
+  hasImagesEmptyAltAttribute() {
+    const withoutAltAttribute = this.getWithEmptyAltAttribute();
+    return withoutAltAttribute.issues.length > 0;
+  }
+  getAltTextSameAsFilename() {
+    const images = this.images.filter((img) => img.getAttribute("src") !== img.getAttribute("alt"));
+    return this.makeIssueObject("alt_text_same_as_filename", "1.1.1", images);
+  }
+  hasImagesWithAtlTextSameAsFilename() {
+    const images = this.getAltTextSameAsFilename();
+    return images.issues.length > 0;
+  }
+  showIssues() {
+    return [this.getWithoutAltAttribute(), this.getAltTextSameAsFilename(), this.getWithEmptyAltAttribute()].filter((res) => res.issues.length > 0);
+  }
+  hasIssues() {
+    const hasTags = this.getTags().length > 0;
+    const missingAltAttr = this.hasImagesMissingAltAttribute();
+    const hasSameSrcAndAlt = this.hasImagesWithAtlTextSameAsFilename();
+    return hasTags && (missingAltAttr || hasSameSrcAndAlt);
+  }
+};
+
 // src/Scanner.ts
 var Scanner = class _Scanner {
   constructor(doc) {
     this.document = null;
-    this.rules = [Headings, Anchor];
+    this.rules = [Headings, Anchor, Image];
     this.document = doc;
   }
   static fromHtmlText(html) {
