@@ -1,7 +1,8 @@
 import {BaseRules} from "./BaseRules";
 import _ from "lodash"
+import RuleInterface from "./contracts/RuleInterface";
 
-export  class Table extends BaseRules{
+export  class Table extends BaseRules implements RuleInterface{
     public type = 'Table'
     tables: any
     constructor(doc: Document) {
@@ -135,4 +136,54 @@ export  class Table extends BaseRules{
         const doc = this.getWithTHScopeIssues()
         return doc.issues.length > 0
     }
+
+    public doesNotUseScopeAttributeToIdCells(){
+
+            const tablesWithInvalidHeaderScope: object[] = [];
+
+            this.tables.forEach((table: HTMLTableElement) => {
+                // Get all rows of the table
+                const rows = table.getElementsByTagName('tr');
+                let invalidHeaderCounter = 0;
+                for (let i = 0; i < rows.length; i++) {
+                    // Access each cell in this row
+                    for (let j = 0; j < rows[i].cells.length; j++) {
+                        const cell = rows[i].cells[j];
+                        // If this cell is a header and it does not contain a 'scope' attribute, it's invalid
+                        if (cell.nodeName === 'TH' && !cell.hasAttribute('scope')) {
+                            invalidHeaderCounter++;
+                        }
+                    }
+                }
+                // If the table had any invalid headers, add it to the list
+                if (invalidHeaderCounter > 0) {
+                    tablesWithInvalidHeaderScope.push(table);
+                }
+            });
+
+            return this.makeIssueObject('table_does_not_use_scope_attribute_to_id_cells', '1.3.1', tablesWithInvalidHeaderScope)
+        }
+
+    public hasCellScopeIssues(){
+        const doc = this.doesNotUseScopeAttributeToIdCells()
+        return doc.issues.length > 0
+    }
+
+    public hasIssues(): boolean {
+        const hasTags = this.getTags().length > 0
+        const haveTablesWithoutSummaryAttribute = this.requireSummary()
+        const haveTablesWithSameSummaryAndCaption = this.hasTablesWithSameSummaryAndCaption()
+        const haveCellsWithTHScopeIssues = this.hasTHScopeIssues()
+        const haveCellScopeAttrIssues = this.hasCellScopeIssues()
+        const haveEmptySummaryIssues = this.hasTablesWithEmptySummary()
+        const HasIssues = ( haveTablesWithoutSummaryAttribute || haveTablesWithSameSummaryAndCaption || haveCellsWithTHScopeIssues || haveCellScopeAttrIssues || haveEmptySummaryIssues )
+        return hasTags && HasIssues
+
+    }
+
+    public showIssues(): any[] {
+        return [this.getWithEmptySummary(),this.getWithTHScopeIssues(),this.doesNotUseScopeAttributeToIdCells(),this.getWithSameSummaryAndCaption(),this.getComplexTables()]
+    }
+
+
 }

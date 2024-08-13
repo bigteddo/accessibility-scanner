@@ -241,98 +241,54 @@ describe('Table', () => {
 
     it('should check tables with more than one row/column of headers use the id and headers attributes to identify cells', () => {
         const parser = new DOMParser();
-        const document = parser.parseFromString('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n' +
+        const document = parser.parseFromString('<?xml version="1.0" encoding="UTF-8"?>\n' +
+            '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n' +
             '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n' +
             '<head>\n' +
             '<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n' +
-            '<title>ATRC Testfile - Check #245.2 - Negative</title>\n' +
+            '<title>ATRC Testfile - Check #245.1 - Positive</title>\n' +
             '</head>\n' +
             '<body>\n' +
             '\n' +
             '<table border="1" >\n' +
             '<tr>\n' +
-            '\t<th id="class">Class</th>\n' +
-            '\t<th id="teacher">Teacher</th>\n' +
-            '\t<th id="males">Males</th>\n' +
-            '\t<th id="females">Females</th>\n' +
+            '\t<th>Class</th>\n' +
+            '\t<th>Teacher</th>\n' +
+            '\t<th>Males</th>\n' +
+            '\t<th>Females</th>\n' +
             '</tr>\n' +
             '<tr>\n' +
-            '\t<th id="firstyear"  headers="firstyear" rowspan="2">First Year</th>\n' +
-            '\t<th id="Bolter" headers="firstyear teacher">D. Bolter</th>\n' +
-            '\t<td headers="firstyear Bolter males">5</td>\n' +
-            '\t<td headers="firstyear Bolter females">4</td>\n' +
+            '\t<th rowspan="2">First Year</th>\n' +
+            '\t<th>D. Bolter</th>\n' +
+            '\t<td>5</td>\n' +
+            '\t<td>4</td>\n' +
             '</tr>\n' +
             '<tr>\n' +
-            '\t<th id="Cheetham" headers="firstyear teacher">A. Cheetham</th>\n' +
-            '\t<td headers="firstyear Cheetham males">7</td>\n' +
-            '\t<td headers="firstyear Cheetham females">9</td>\n' +
+            '\t<th>A. Cheetham</th>\n' +
+            '\t<td>7</td>\n' +
+            '\t<td>9</td>\n' +
             '</tr>\n' +
             '<tr>\n' +
-            '\t<th id="secondyear" headers="secondyear" rowspan="3">Second Year</th>\n' +
-            '\t<th id="Lam" headers="secondyear teacher">M. Lam</th>\n' +
-            '\t<td headers="secondyear Lam males">3</td>\n' +
-            '\t<td headers="secondyear Lam females">9</td>\n' +
+            '\t<th rowspan="3">Second Year</th>\n' +
+            '\t<th>M. Lam</th>\n' +
+            '\t<td>3</td>\n' +
+            '\t<td>9</td>\n' +
             '</tr>\n' +
             '<tr>\n' +
-            '\t<th id="Crossy" headers="secondyear teacher">S. Crossy</th>\n' +
-            '\t<td headers="secondyear Crossy males">4</td>\n' +
-            '\t<td headers="secondyear Crossy females">3</td>\n' +
+            '\t<th>S. Crossy</th>\n' +
+            '\t<td>4</td>\n' +
+            '\t<td>3</td>\n' +
             '</tr>\n' +
             '<tr>\n' +
-            '\t<th id="Forsyth" headers="secondyear teacher">A. Forsyth</th>\n' +
-            '\t<td headers="secondyear Forsyth males">6</td>\n' +
-            '\t<td headers="secondyear Forsyth females">9</td>\n' +
+            '\t<th>A. Forsyth</th>\n' +
+            '\t<td>6</td>\n' +
+            '\t<td>9</td>\n' +
             '</tr>\n' +
             '</table>\n' +
             '\n' +
             '</body>\n' +
             '</html>', "text/html")
-        const text = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n' +
-            '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n' +
-            '<head>\n' +
-            '<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n' +
-            '<title>ATRC Testfile - Check #245.2 - Negative</title>\n' +
-            '</head>\n' +
-            '<body>\n' +
-            '\n' +
-            '<table border="1" >\n' +
-            '<tr>\n' +
-            '\t<th id="class">Class</th>\n' +
-            '\t<th id="teacher">Teacher</th>\n' +
-            '\t<th id="males">Males</th>\n' +
-            '\t<th id="females">Females</th>\n' +
-            '</tr>\n' +
-            '<tr>\n' +
-            '\t<th id="firstyear"  headers="firstyear" rowspan="2">First Year</th>\n' +
-            '\t<th id="Bolter" headers="firstyear teacher">D. Bolter</th>\n' +
-            '\t<td headers="firstyear Bolter males">5</td>\n' +
-            '\t<td headers="firstyear Bolter females">4</td>\n' +
-            '</tr>\n' +
-            '<tr>\n' +
-            '\t<th id="Cheetham" headers="firstyear teacher">A. Cheetham</th>\n' +
-            '\t<td headers="firstyear Cheetham males">7</td>\n' +
-            '\t<td headers="firstyear Cheetham females">9</td>\n' +
-            '</tr>\n' +
-            '<tr>\n' +
-            '\t<th id="secondyear" headers="secondyear" rowspan="3">Second Year</th>\n' +
-            '\t<th id="Lam" headers="secondyear teacher">M. Lam</th>\n' +
-            '\t<td headers="secondyear Lam males">3</td>\n' +
-            '\t<td headers="secondyear Lam females">9</td>\n' +
-            '</tr>\n' +
-            '<tr>\n' +
-            '\t<th id="Crossy" headers="secondyear teacher">S. Crossy</th>\n' +
-            '\t<td headers="secondyear Crossy males">4</td>\n' +
-            '\t<td headers="secondyear Crossy females">3</td>\n' +
-            '</tr>\n' +
-            '<tr>\n' +
-            '\t<th id="Forsyth" headers="secondyear teacher">A. Forsyth</th>\n' +
-            '\t<td headers="secondyear Forsyth males">6</td>\n' +
-            '\t<td headers="secondyear Forsyth females">9</td>\n' +
-            '</tr>\n' +
-            '</table>\n' +
-            '\n' +
-            '</body>\n' +
-            '</html>'
+
         const table = new Table(document)
         const actual = table.hasTHScopeIssues()
         expect(actual).toBeTruthy()
@@ -340,7 +296,8 @@ describe('Table', () => {
 
     it('it should return tables has no TH scope issues', () => {
         const parser = new DOMParser();
-        const document = parser.parseFromString('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n' +
+        const document = parser.parseFromString('<?xml version="1.0" encoding="UTF-8"?>\n' +
+            '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n' +
             '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n' +
             '<head>\n' +
             '<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n' +
@@ -356,7 +313,7 @@ describe('Table', () => {
             '\t<th id="females">Females</th>\n' +
             '</tr>\n' +
             '<tr>\n' +
-            '\t<th id="firstyear"  rowspan="2">First Year</th>\n' +
+            '\t<th id="firstyear" rowspan="2">First Year</th>\n' +
             '\t<th id="Bolter" headers="firstyear teacher">D. Bolter</th>\n' +
             '\t<td headers="firstyear Bolter males">5</td>\n' +
             '\t<td headers="firstyear Bolter females">4</td>\n' +
@@ -367,7 +324,7 @@ describe('Table', () => {
             '\t<td headers="firstyear Cheetham females">9</td>\n' +
             '</tr>\n' +
             '<tr>\n' +
-            '\t<th id="secondyear" headers="lalala" rowspan="3">Second Year</th>\n' +
+            '\t<th id="secondyear" rowspan="3">Second Year</th>\n' +
             '\t<th id="Lam" headers="secondyear teacher">M. Lam</th>\n' +
             '\t<td headers="secondyear Lam males">3</td>\n' +
             '\t<td headers="secondyear Lam females">9</td>\n' +
@@ -389,6 +346,63 @@ describe('Table', () => {
 
         const table = new Table(document)
         const actual = table.hasTHScopeIssues()
+        expect(actual).toBeFalsy()
+    })
+
+    it('it should detect that Data tables that contain both row and column headers use the scope attribute to identify cells.', () => {
+        const parser = new DOMParser();
+        const document = parser.parseFromString('<?xml version="1.0" encoding="UTF-8"?>\n' +
+            '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n' +
+            '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n' +
+            '<head>\n' +
+            '<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n' +
+            '<title>ATRC Testfile - Check #244.1 - Positive</title>\n' +
+            '</head>\n' +
+            '<body>\n' +
+            '\n' +
+            '<table border="1">\n' +
+            '<tr><th>Name</th><th>Birth</th><th>Gender</th></tr>\n' +
+            '<tr><th>Clayton</th><td>2005-10-10</td><td>male</td></tr>\n' +
+            '<tr><th>Carol</th><td>2005-10-11</td><td>female</td></tr>\n' +
+            '<tr><th>Susan</th><td>2005-10-12</td><td>female</td></tr>\n' +
+            '<tr><th>Oleg</th><td>2005-10-13</td><td>male</td></tr>\n' +
+            '<tr><th>Belnar</th><td>2005-10-14</td><td>male</td></tr>\n' +
+            '<tr></tr>\n' +
+            '</table>\n' +
+            '\n' +
+            '</body>\n' +
+            '</html>', "text/html")
+
+        const table = new Table(document)
+        const actual = table.hasCellScopeIssues()
         expect(actual).toBeTruthy()
+    })
+
+    it('it should not detect that Data tables that contain both row and column headers use the scope attribute to identify cells.', () => {
+        const parser = new DOMParser();
+        const document = parser.parseFromString('<?xml version="1.0" encoding="UTF-8"?>\n' +
+            '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n' +
+            '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n' +
+            '<head>\n' +
+            '<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n' +
+            '<title>ATRC Testfile - Check #244.2 - Negative</title>\n' +
+            '</head>\n' +
+            '<body>\n' +
+            '\n' +
+            '<table border="1">\n' +
+            '<tr><th scope="col">Name</th><th scope="col">Birth</th><th scope="col">Gender</th></tr>\n' +
+            '<tr><th scope="row">Clayton</th><td>2005-10-10</td><td>male</td></tr>\n' +
+            '<tr><th scope="row">Carol</th><td>2005-10-11</td><td>female</td></tr>\n' +
+            '<tr><th scope="row">Susan</th><td>2005-10-12</td><td>female</td></tr>\n' +
+            '<tr><th scope="row">Oleg</th><td>2005-10-13</td><td>male</td></tr>\n' +
+            '<tr><th scope="row">Belnar</th><td>2005-10-14</td><td>male</td></tr>\n' +
+            '</table>\n' +
+            '\n' +
+            '</body>\n' +
+            '</html>', "text/html")
+
+        const table = new Table(document)
+        const actual = table.hasCellScopeIssues()
+        expect(actual).toBeFalsy()
     })
 })

@@ -2,9 +2,10 @@ import {DOM, DOM as String} from './utils/DOM'
 import {Headings} from "./rules/Headings";
 import {Anchor} from "./rules/Anchor";
 import {Image} from "./rules/Image";
+import {Table} from "./rules/Table";
 export class Scanner {
     private document: Document|null = null;
-    private rules: any[]= [Headings,Anchor,Image]
+    private rules: any[]= [Headings,Anchor,Image,Table]
     constructor(doc: Document) {
           this.document = doc;
     }
@@ -24,7 +25,6 @@ export class Scanner {
                 issues.push(rule.showIssues())
             }
         })
-        console.log(issues)
         return issues.flat()
     }
 

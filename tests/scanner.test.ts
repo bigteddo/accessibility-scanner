@@ -29,7 +29,54 @@ describe('scanner', () => {
             '<a href="https://scanner.mindedgeuniversity.com" target="_blank" rel="noopener"></a>.\n' +
             '<a target="_blank" rel="noopener"></a>.\n' +
             '<a target="_blank" rel="noopener">abc</a>.\n' +
-            '<h1>this is a h1</h1>'
+            '<h1>this is a h1</h1>'+
+            '<?xml version="1.0" encoding="UTF-8"?>\n' +
+            '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n' +
+            '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n' +
+            '<head>\n' +
+            '<meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8" />\n' +
+            '<title>ATRC Testfile - Check #245.1 - Positive</title>\n' +
+            '</head>\n' +
+            '<body>\n' +
+            '\n' +
+            '<table border="1" >\n' +
+            '<tr>\n' +
+            '\t<th>Class</th>\n' +
+            '\t<th>Teacher</th>\n' +
+            '\t<th>Males</th>\n' +
+            '\t<th>Females</th>\n' +
+            '</tr>\n' +
+            '<tr>\n' +
+            '\t<th rowspan="2">First Year</th>\n' +
+            '\t<th>D. Bolter</th>\n' +
+            '\t<td>5</td>\n' +
+            '\t<td>4</td>\n' +
+            '</tr>\n' +
+            '<tr>\n' +
+            '\t<th>A. Cheetham</th>\n' +
+            '\t<td>7</td>\n' +
+            '\t<td>9</td>\n' +
+            '</tr>\n' +
+            '<tr>\n' +
+            '\t<th rowspan="3">Second Year</th>\n' +
+            '\t<th>M. Lam</th>\n' +
+            '\t<td>3</td>\n' +
+            '\t<td>9</td>\n' +
+            '</tr>\n' +
+            '<tr>\n' +
+            '\t<th>S. Crossy</th>\n' +
+            '\t<td>4</td>\n' +
+            '\t<td>3</td>\n' +
+            '</tr>\n' +
+            '<tr>\n' +
+            '\t<th>A. Forsyth</th>\n' +
+            '\t<td>6</td>\n' +
+            '\t<td>9</td>\n' +
+            '</tr>\n' +
+            '</table>\n' +
+            '\n' +
+            '</body>\n' +
+            '</html>'
 
         const scanner = Scanner.fromHtmlText(html)
         const actual = scanner.runScan()
