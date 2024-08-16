@@ -10,21 +10,41 @@ export  class Table extends BaseRules implements RuleInterface{
         this.tables = this.getTags()
     }
 
+    /**
+     * Retrieves all the HTML elements with the tag name "table".
+     *
+     * @returns {HTMLElement[]} An array containing all the HTML elements with the tag name "table".
+     */
     public getTags(): HTMLElement[] {
         return [...this.document.getElementsByTagName('table')]
     }
 
+    /**
+     * Get tables with empty summary attribute.
+     *
+     * @return {Object} - Issue object containing tables with empty summary attribute.
+     */
     public getWithEmptySummary(){
         const tables = this.tables.filter((table: HTMLElement) => table.hasAttribute('summary') && _.isEmpty(table.getAttribute('summary')))
         return this.makeIssueObject('summary_does_not_contain_text', '1.3.1', tables)
     }
 
 
+    /**
+     * Checks if there are any tables with empty summaries.
+     *
+     * @returns {boolean} True if there are tables with empty summaries, false otherwise.
+     */
     public hasTablesWithEmptySummary(): boolean {
         const emptySummary = this.getWithEmptySummary()
         return emptySummary.issues.length > 0
     }
 
+    /**
+     * Checks if there are any issues in the complex tables.
+     *
+     * @return {boolean} True if there are issues, false otherwise.
+     */
     public requireSummary(){
         const tables = this.getComplexTables()
         return tables.issues.length > 0
@@ -100,12 +120,22 @@ export  class Table extends BaseRules implements RuleInterface{
          return this.makeIssueObject('table_summary_and_caption_equal','1.3.1', tables)
     }
 
+    /**
+     * Determines if there are tables with the same summary and caption.
+     *
+     * @return {boolean} - true if there are tables with the same summary and caption, false otherwise.
+     */
     public hasTablesWithSameSummaryAndCaption(){
         const results = this.getWithSameSummaryAndCaption()
         return results.issues.length > 0
     }
 
 
+    /**
+     * Retrieves tables with TH scope issues.
+     *
+     * @return {object[]} - An array of tables containing TH scope issues.
+     */
     public getWithTHScopeIssues(){
         const tablesWithIdAndHeaders: object[] = [];
 
@@ -132,11 +162,21 @@ export  class Table extends BaseRules implements RuleInterface{
         return this.makeIssueObject('table_summary_and_caption_equal','1.3.1', tablesWithIdAndHeaders)
     }
 
+    /**
+     * Checks if there are any scope issues in the document.
+     *
+     * @returns {boolean} Returns true if there are scope issues, otherwise false.
+     */
     public hasTHScopeIssues(){
         const doc = this.getWithTHScopeIssues()
         return doc.issues.length > 0
     }
 
+    /**
+     * Checks if tables in the document do not use the 'scope' attribute to identify header cells.
+     *
+     * @returns {Object} - An issue object containing tables with invalid header cells.
+     */
     public doesNotUseScopeAttributeToIdCells(){
 
             const tablesWithInvalidHeaderScope: object[] = [];
@@ -164,11 +204,20 @@ export  class Table extends BaseRules implements RuleInterface{
             return this.makeIssueObject('table_does_not_use_scope_attribute_to_id_cells', '1.3.1', tablesWithInvalidHeaderScope)
         }
 
+    /**
+     * Checks if the document has cell scope issues.
+     * @returns {boolean} True if there are cell scope issues, false otherwise.
+     */
     public hasCellScopeIssues(){
         const doc = this.doesNotUseScopeAttributeToIdCells()
         return doc.issues.length > 0
     }
 
+    /**
+     * Checks if there are any issues with the current instance.
+     *
+     * @return {boolean} - Returns true if there are any issues, false otherwise.
+     */
     public hasIssues(): boolean {
         const hasTags = this.getTags().length > 0
         const haveTablesWithoutSummaryAttribute = this.requireSummary()
@@ -181,6 +230,11 @@ export  class Table extends BaseRules implements RuleInterface{
 
     }
 
+    /**
+     * Retrieves an array of issues related to table display.
+     *
+     * @return {any[]} Array containing the issues
+     */
     public showIssues(): any[] {
         return [this.getWithEmptySummary(),this.getWithTHScopeIssues(),this.doesNotUseScopeAttributeToIdCells(),this.getWithSameSummaryAndCaption(),this.getComplexTables()]
     }
